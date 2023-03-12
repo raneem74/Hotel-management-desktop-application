@@ -37,7 +37,7 @@
 
                         <!-- Fourth row: Month, Day, and Year drop-down lists -->
                         <StackPanel Grid.Row="3" Orientation="Horizontal">
-                            <ComboBox x:Name="cmbMonth" Width="100" Margin="10">
+                            <ComboBox x:Name="cmbMonth" Width="100" Margin="10" SelectedValuePath="Content">
                                 <ComboBoxItem>January</ComboBoxItem>
                                 <ComboBoxItem>February</ComboBoxItem>
                                 <ComboBoxItem>March</ComboBoxItem>
@@ -112,7 +112,7 @@
                         </StackPanel>
                         <!-- Fourteenth row: State drop-down list -->
                         <StackPanel Grid.Row="13" Orientation="Horizontal" Margin="8">
-                            <ComboBox x:Name="cmbState" Width="145" Margin="5">
+                            <ComboBox x:Name="cmbState" Width="145" Margin="5" SelectedValuePath="Content">
                                 <ComboBoxItem>Alabama</ComboBoxItem>
                                 <ComboBoxItem>Alaska</ComboBoxItem>
                                 <ComboBoxItem>Arizona</ComboBoxItem>
@@ -259,13 +259,13 @@
                         <Button Grid.Row="2" Content="New reservation" Name="btnNewReservation" Margin="10" Height="50"/>
                     </Grid>-->
                     <StackPanel Background="LightGray" Grid.Column="3" Margin="10,10,10,10">
-                        <ComboBox x:Name="cmbReservationTitle" Visibility="Hidden" Width="300" Margin="10 35 10 10">
+                        <ComboBox x:Name="cmbReservationTitle" Visibility="Hidden" Width="300" Margin="10 35 10 10" SelectionChanged="cmbReservationTitle_SelectionChanged">
 
                         </ComboBox>
                         <Button Content="Update" Visibility="Hidden" Name="btnUpdate" Margin="10 127 10 10" Height="50" />
-                        <Button Content="Delete" Visibility="Hidden" Name="btnDelete" Margin="10" Height="50" />
+                        <Button Content="Delete" Visibility="Hidden" Name="btnDelete" Margin="10" Height="50" Click="btnDelete_Click" />
                         <Button Content="Edit existing Reservation" Name="btnEditExistingReservation" Margin="10" Height="50" Click="btnEditExistingReservation_Click" />
-                        <Button Content="New reservation" Name="btnNewReservation" Margin="10" Height="50"/>
+                        <Button Content="New reservation" Name="btnNewReservation" Margin="10" Height="50" Click="btnNewReservation_Click"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -276,9 +276,6 @@
                 <DataGrid Name="dataGridReservation">
 
                 </DataGrid>
-            </TabItem>
-            <TabItem Header="Universal Seacrch">
-                <Grid Background="#FFE2F0F4"/>
             </TabItem>
             <TabItem Header="Room availibility">
                 <Grid>

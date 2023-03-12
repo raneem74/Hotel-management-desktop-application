@@ -28,9 +28,9 @@ namespace HotelManegmantWpfApp
         internal int breakfastPrice = 7;
         internal int lunchPrice = 15;
         internal int dinnerPrice = 15;
-        internal bool cleaning;
-        internal bool towel;
-        internal bool surprise;
+        internal bool cleaning = false;
+        internal bool towel = false;
+        internal bool surprise = false;
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
