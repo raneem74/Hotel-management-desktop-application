@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -33,20 +34,9 @@ namespace HotelManegmantWpfApp
     /// </summary>
     public partial class Window1 : System.Windows.Window
     {
-        public Window1()
-        {
-            context.reservations.Load();
-            InitializeComponent();
-        }
-        //double foodBill;
-        //double breakfastPrice = 7;
-        //double lunchPrice = 15;
-        //double dinnerPrice = 15;
-        //bool? cleaning;
-        //bool? towel;
-        //bool? surprise;
+
         FrontendContext context = new FrontendContext();
-        
+
         public int totalAmount = 0;
         foodMenuWindow foodmenuWin;//new with defualt params
         Finalizebill finalizebill;
@@ -60,11 +50,26 @@ namespace HotelManegmantWpfApp
         public Boolean editClicked = false;
         double totalBill = 0;
         int breakfastQty;
-        int lunchQty ;
+        int lunchQty;
         int dinnerQty;
         bool cleaning;
         bool towel;
         bool surprise;
+        List<Reservation> OccupiedList;
+        List<Reservation> ReservedList;
+        public Window1()
+        {
+
+            InitializeComponent();
+
+            context.reservations.Load();
+            dataGridReservation.ItemsSource = context.reservations.Local.ToObservableCollection();
+
+            setOccupiedRoom();
+            setReservedRoom();
+        }
+
+
         private void btnFoodAndMenu_Click(object sender, RoutedEventArgs e)
         {
             foodmenuWin = new foodMenuWindow();
@@ -73,10 +78,7 @@ namespace HotelManegmantWpfApp
             this.IsEnabled = false;
             foodmenuWin.Topmost = true;
 
-            //bool? breakfast = foodmenuWin.breakfastCheckbox.IsChecked;
-            //bool? lunch = foodmenuWin.lunchCheckbox.IsChecked;
-            //bool? dinner = foodmenuWin.dinnerCheckbox.IsChecked;
-
+         
              breakfastQty = (int)foodmenuWin.breakfastQTY.Value ;
              lunchQty = (int)foodmenuWin.breakfastQTY.Value;
              dinnerQty = (int)foodmenuWin.dinnerQTY.Value;
@@ -85,13 +87,7 @@ namespace HotelManegmantWpfApp
             towel = foodmenuWin.towel;
             surprise = foodmenuWin.surprise;
 
-            //if (breakfastQty > 0 || lunchQty > 0 || dinnerQty > 0)
-            //{
-            //    double bfastTotalPrice = breakfastPrice * breakfastQty;
-            //    double LTotalPricePrice = lunchPrice * lunchQty;
-            //    double dTotalPricePrice = dinnerPrice * dinnerQty;
-            //    foodBill = bfastTotalPrice + LTotalPricePrice + dTotalPricePrice;
-            //}
+            
 
             foodmenuWin.Closed += (s, args) => { this.IsEnabled = true; };
         }
@@ -354,6 +350,21 @@ namespace HotelManegmantWpfApp
             context.reservations.Add(reservation);
             context.SaveChanges();
 
+            reset_frontend();
+            setOccupiedRoom();
+        }
+
+        private void setOccupiedRoom()
+        {
+            OccupiedList = context.reservations.Where(i => i.check_in == false).ToList();
+
+            lstOccupied.ItemsSource = OccupiedList;
+        }
+        private void setReservedRoom()
+        {
+            ReservedList = context.reservations.Where(i => i.check_in == true).ToList();
+
+            lstReserved.ItemsSource = ReservedList;
         }
     }
 }

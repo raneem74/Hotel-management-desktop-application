@@ -128,5 +128,17 @@ namespace HotelManegmantWpfApp.Entities
 
         [Required]
         public int food_bill { get; set; }
+
+        public override string ToString()
+        {
+            //"[" + room_number.Replace(" ", string.Empty) + "]" +
+            //            " " + room_type.Replace(" ", string.Empty) +
+            //            " " + ID.Replace(" ", string.Empty) +
+            //            " " + "[" + first_name.Replace(" ", string.Empty) +
+            //            " " + last_name.Replace(" ", string.Empty) + "]" +
+            //            " " + phone_number.Replace(" ", string.Empty)
+
+            return $"[{room_number.Trim()}] {room_type.Trim()} {Id} [{first_name.Trim()} {last_name.Trim()}] {phone_number.Trim( )}";
+        }
     }
 }
