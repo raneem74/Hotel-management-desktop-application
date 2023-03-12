@@ -1,0 +1,58 @@
+﻿<Window x:Name="login" x:Class="HotelManegmantWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HotelManegmantWpfApp" xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d" Height="457" Width="582" FontFamily="Comic Sans MS" Background="SlateGray" BorderBrush="{DynamicResource {x:Static SystemColors.MenuHighlightBrushKey}}" Icon="/Hybridworks-Haunted-Hotel-Haunted-Hotel.256.png" Topmost="True">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="2,2,2,2" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="DarkSlateGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="59*"/>
+            <ColumnDefinition Width="316*"/>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="142*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Login" HorizontalAlignment="Left" Margin="30,10,0,0" VerticalAlignment="Top" Width="306" Grid.ColumnSpan="2" Height="66" FontSize="22" Grid.Column="1"/>
+        <TextBox Name="Username"  TextChanged="OnTextBoxTextChanged" Grid.Column="2" HorizontalAlignment="Left" Margin="131,154,0,0" VerticalAlignment="Top" Width="202" Height="35" FontSize="20" Grid.ColumnSpan="2" BorderBrush="#FF074247">
+            <TextBox.Background>
+                <ImageBrush ImageSource="assets\Username.PNG" AlignmentX="Left" Stretch="None" />
+            </TextBox.Background>
+        </TextBox>
+        <TextBox Name="Password" TextChanged="OnTextBoxTextChanged" Grid.Column="2" HorizontalAlignment="Left" Margin="131,235,0,0" VerticalAlignment="Top" Width="202" Height="35" Grid.ColumnSpan="2" FontSize="20" BorderBrush="#FF074247">
+            <TextBox.Background>
+                <ImageBrush ImageSource="assets\Password.PNG" AlignmentX="Left" Stretch="None" />
+            </TextBox.Background>
+        </TextBox>
+        <Button x:Name="SigninBtn" Style="{StaticResource ButtonStyle}" Grid.Column="2" Content="Sign in" HorizontalAlignment="Left" Margin="131,310,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="202" Height="35" FontSize="16" BorderBrush="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Click="Button_Click" BorderThickness="0,0,0,0"/>
+        
+        <!--<TextBox Grid.Column="4" HorizontalAlignment="Left" Margin="0,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.403,0.579">
+            <Grid>
+                <Image Source="assets/edit.png" Width="16" Height="16" Margin="4"/>
+                <TextBox Margin="24,0,0,0"/>
+            </Grid>
+        </TextBox>-->
+
+
+
+    </Grid>
+</Window>
