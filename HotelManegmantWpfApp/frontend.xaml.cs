@@ -479,7 +479,8 @@ namespace HotelManegmantWpfApp
         {
             //search button
             //var searchtxt = 
-            var result = context.reservations.FromSqlRaw <Reservation>($"Select * from reservation where Id like %{txtSearch.Text}% OR last_name like %{txtSearch.Text}% OR first_name like %{txtSearch.Text}% OR gender like %{txtSearch.Text}% OR state like %{txtSearch.Text}% OR city like %{txtSearch.Text} % OR room_number like %{txtSearch.Text}% OR room_type like %{txtSearch.Text}% OR email_address like %{txtSearch.Text}% OR phone_number like %{txtSearch.Text}% ").ToList();
+            string SQLCommand = $"Select * from reservations where Id like '%{txtSearch.Text}%' OR last_name like '%{txtSearch.Text}%' OR first_name like '%{txtSearch.Text}%' OR gender like '%{txtSearch.Text}%' OR state like '%{txtSearch.Text}%' OR city like '%{txtSearch.Text}%' OR room_number like '%{txtSearch.Text}%' OR room_type like '%{txtSearch.Text}%' OR email_address like '%{txtSearch.Text}%' OR phone_number like '%{txtSearch.Text}%' ";
+            var result = context.reservations.FromSqlRaw <Reservation>(SQLCommand).ToList();
             SearchGrid.ItemsSource = result;
 
         }

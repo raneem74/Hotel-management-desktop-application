@@ -272,8 +272,8 @@
             <TabItem Header="Universal Seacrch">
                 <StackPanel>
                     <TextBox x:Name="txtSearch" Margin="10" Height="30"/>
-                    <Button Width="100" Height="50" Content="Search" Click="Button_Click"/>
-                    <DataGrid x:Name="SearchGrid"></DataGrid>
+                    <Button Width="100" Height="50" Content="Search" Click="Button_Click" Margin="10"/>
+                    <DataGrid x:Name="SearchGrid" Height="300" Width="1047"></DataGrid>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Reservation Adv. view">
