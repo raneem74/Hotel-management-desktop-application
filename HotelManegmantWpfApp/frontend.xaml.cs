@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 using System.Web.UI.WebControls;
 using System.Windows;
 using System.Windows.Controls;
@@ -382,7 +383,7 @@ namespace HotelManegmantWpfApp
                 reservation.room_type = ((ComboBoxItem)cmbRoomType.SelectedItem).Content.ToString();
                 reservation.room_floor = ((ComboBoxItem)cmbFloor.SelectedItem).Content.ToString();
                 reservation.room_number = ((ComboBoxItem)cmbRoomNumber.SelectedItem).Content.ToString();
-            reservation.total_bill = (float)totalBill;
+                reservation.total_bill = (float)totalBill;
                 reservation.payment_type = finalizebill.paymentType;
                 reservation.card_type = finalizebill.CardType;
                 reservation.card_number = finalizebill.paymentCardNumber;
@@ -431,6 +432,57 @@ namespace HotelManegmantWpfApp
             lstReserved.ItemsSource = ReservedList;
         }
 
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            
+            Reservation updated = context.reservations.Where(i => i.Id == primartyID).FirstOrDefault();
+            
+            string BirthDay = ((ComboBoxItem)cmbMonth.SelectedItem).Content.ToString() + "-" + ((ComboBoxItem)cmbDay.SelectedItem).Content.ToString() + "-" + txtYear.Text;
+
+            updated.first_name = txtFname.Text;
+            updated.last_name = txtSname.Text;
+            updated.birth_day = BirthDay;
+            updated.gender = ((ComboBoxItem)cmbGender.SelectedItem).Content.ToString();
+            updated.phone_number = txtPhoneNumber.Text;
+            updated.email_address = txtEmail.Text;
+            updated.number_guest = int.Parse(((ComboBoxItem)cmbGstNumber.SelectedItem).Content.ToString());
+            updated.street_address = txtAddress.Text;
+            updated.apt_suite = txtApt.Text;
+            updated.city = txtCity.Text;
+            updated.state = ((ComboBoxItem)cmbState.SelectedItem).Content.ToString();
+            updated.zip_code = txtZip.Text;
+            updated.room_type = ((ComboBoxItem)cmbRoomType.SelectedItem).Content.ToString();
+            updated.room_floor = ((ComboBoxItem)cmbFloor.SelectedItem).Content.ToString();
+            updated.room_number = ((ComboBoxItem)cmbRoomNumber.SelectedItem).Content.ToString();
+            updated.total_bill = (float)totalBill;
+            //updated.payment_type = finalizebill.paymentType;
+            //updated.card_type = finalizebill.CardType;
+            //updated.card_number = finalizebill.paymentCardNumber;
+            //updated.card_exp = finalizebill.MM_YY_Of_Card;
+            //updated.card_cvc = finalizebill.CVC_Of_Card;
+            updated.arrival_time = dpEntryDate.SelectedDate ?? new DateTime();
+            updated.leaving_time = dpDepartureDate.SelectedDate ?? new DateTime();
+            updated.check_in = chkCheckIn.IsChecked ?? false;
+            updated.break_fast = breakfastQty;
+            updated.lunch = lunchQty;
+            updated.dinner = dinnerQty;
+            updated.cleaning = cleaning;
+            updated.towel = towel;
+            updated.s_surprise = surprise;
+            updated.supply_status = chkFoodStatus.IsChecked ?? false;
+            updated.food_bill = foodmenuWin.foodBill;
+            context.SaveChanges();
+            reset_frontend();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //search button
+            //var searchtxt = 
+            var result = context.reservations.FromSqlRaw <Reservation>($"Select * from reservation where Id like %{txtSearch.Text}% OR last_name like %{txtSearch.Text}% OR first_name like %{txtSearch.Text}% OR gender like %{txtSearch.Text}% OR state like %{txtSearch.Text}% OR city like %{txtSearch.Text} % OR room_number like %{txtSearch.Text}% OR room_type like %{txtSearch.Text}% OR email_address like %{txtSearch.Text}% OR phone_number like %{txtSearch.Text}% ").ToList();
+            SearchGrid.ItemsSource = result;
+
+        }
         private void UpdateAvailableRooms()
         {
             var result = OccupiedList.Select(i => i.room_number.Trim()).ToList();
@@ -455,6 +507,7 @@ namespace HotelManegmantWpfApp
                 Reservation deleted = context.reservations.Where(i => i.Id == primartyID).FirstOrDefault();
                 context.reservations.Remove(deleted);
                 context.SaveChanges();
+                reset_frontend();
             }
         }
 
@@ -510,8 +563,8 @@ namespace HotelManegmantWpfApp
             {
                 surprise = false;
             }
-            //cmbRoomNumber.Items.Add(room_number);
-            cmbRoomNumber.SelectedItem = room_number;
+            
+            cmbRoomNumber.SelectedItem = cmbRoomNumber.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.room_number.Trim().ToString());
 
             FPayment = payment_type; FCnumber = card_number;
             FCardCVC = card_cvc; FcardExpOne = card_exp.Substring(0, card_exp.IndexOf('/'));
@@ -579,21 +632,33 @@ namespace HotelManegmantWpfApp
             txtFname.Text = first_name;
             txtSname.Text = last_name;
             txtPhoneNumber.Text = phone_number;
-            cmbGender.SelectedItem = gender;
+            cmbGender.SelectedItem = cmbGender.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.gender.Trim().ToString());
 
-            cmbMonth.SelectedValue = birth_day.Substring(0, birth_day.IndexOf('-'));
-            cmbDay.SelectedItem = birth_day.Substring(birth_day.IndexOf('-') + 1, 2);
+
+            //string[] birthDay = reservationToEdit.birth_day.Split(',');
+            //cmbDay.SelectedItem = birth_day.Substring(birth_day.IndexOf('-') + 1, 2);
+            cmbDay.SelectedItem = cmbDay.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.birth_day.Substring(reservationToEdit.birth_day.IndexOf('-') + 1, 2).Trim().ToString());
+            cmbMonth.SelectedItem = cmbMonth.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.birth_day.Substring( 0 , reservationToEdit.birth_day.IndexOf('-')).Trim().ToString());
+
             txtYear.Text = birth_day.Substring(birth_day.Length - Math.Min(4, birth_day.Length));
 
             txtEmail.Text = email_address;
-            cmbGstNumber.SelectedItem = number_guest;
+            cmbGstNumber.SelectedItem = cmbGstNumber.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.number_guest.ToString());
+
+
             txtAddress.Text = street_address;
             txtApt.Text = apt_suite;
             txtCity.Text = city;
-            cmbState.SelectedItem = state;
+            cmbState.SelectedItem = cmbState.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.state.Trim().ToString());
+
+
             txtZip.Text = zip_code;
-            cmbRoomType.SelectedValue = room_type.Trim(); 
-            cmbFloor.SelectedItem = room_floor.Replace(" ", string.Empty);
+            cmbRoomType.SelectedValue = cmbRoomType.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.room_type.Trim().ToString());
+
+
+           
+            cmbFloor.SelectedItem = cmbFloor.Items.OfType<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == reservationToEdit.room_floor.Trim().ToString());
+
             //cmbRoomNumber.SelectedItem = room_number.Replace(" ", string.Empty);
 
             if (check_in == "True")
